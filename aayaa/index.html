@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>نظام إدارة الطلاب - آية</title>
+</head>
+<body>
+<h1>نظام إدارة الطلاب</h1>
+<p>
+       لاظهار نتائج الـ Console
+     <br>
+     <br>
+     F12 اضغط
+    </p>
+
+<script>
+class Student {
+  constructor(id, name, grades, attendance) {
+    this.id = id;
+    this.name = name;
+    this.grades = grades;
+    this.attendance = attendance;
+  }
+
+  getAverage() {
+    const total = this.grades.reduce((sum, g) => sum + g, 0);
+    return total / this.grades.length;
+  }
+
+  getGrade() {
+    const avg = this.getAverage();
+    if (avg >= 90) return "A";
+    if (avg >= 80) return "B";
+    if (avg >= 70) return "C";
+    if (avg >= 60) return "D";
+    return "F";
+  }
+
+  isPassed() {
+    return this.getAverage() >= 60;
+  }
+}
+
+const students = [
+  new Student(201, "Aya", [95, 80, 90], 95),
+  new Student(202, "Gode", [74, 80, 77], 88),
+  new Student(203, "Waad", [49, 44, 45], 70),
+  new Student(204, "Karam", [55, 62, 58], 80),
+  new Student(205, "Anas", [38, 42, 35], 65)
+];
+
+console.log("=== تقرير الطلاب ===");
+students.forEach(s => {
+  console.log(`الطالب ${s.id} - ${s.name}: متوسط ${s.getAverage().toFixed(2)} - تقدير ${s.getGrade()} - ${s.isPassed() ? "ناجح" : "يحتاج مراجعة"}`);
+});
+
+const needHelp = students.filter(s => s.getAverage() >= 40 && s.getAverage() < 50);
+console.log("=== لجنة الرأفة ===");
+console.log(needHelp.map(s => s.name));
+
+const afterHelp = needHelp.map(s => {
+  const newGrades = s.grades.map(g => g + 5);
+  return new Student(s.id, s.name, newGrades, s.attendance);
+});
+
+console.log("=== بعد الرأفة ===");
+afterHelp.forEach(s => {
+  console.log(`${s.name}: متوسط جديد ${s.getAverage().toFixed(2)}`);
+});
+
+const avgAfter = afterHelp.reduce((sum, s) => sum + s.getAverage(), 0) / afterHelp.length;
+console.log(`متوسط المتعثرين بعد التعديل: ${avgAfter.toFixed(2)}`);
+</script>
+</body>
+</html>
